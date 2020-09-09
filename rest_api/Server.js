@@ -7,27 +7,28 @@ app.use(bodyParser.json());
 //route, callback function.
 
 app.get(ROUTE_CONTSTANTS.DEFAULT,function (req,res){
-    res.send("<h1>Welcome to Pega");
+    res.send("<h1>Welcome to Pega!!!");
 
 });
 
 app.get(ROUTE_CONTSTANTS.GET_LOGIN,function (req,res){
     res.sendFile(__dirname+'/pages/login.html');
 });
+app.post(ROUTE_CONTSTANTS.POST_LOGIN, function(req,res){
+    console.log(req.body);
+    res.send("Login Successful");
+});
 
 app.get(ROUTE_CONTSTANTS.GET_REGISTER,function (req,res){
-    res.send("Registration");
+    res.sendFile(__dirname+'/pages/register.html');
+});
+
+app.post(ROUTE_CONTSTANTS.POST_REGISTER, function(req,res){
+    console.log(req.body);
+    res.send("Registration Successful");
 });
 
 app.get(ROUTE_CONTSTANTS.GET_PRODUCTS,function (req,res){
     res.send("<h1>Products Page</h1>");
 });
-
-app.post(ROUTE_CONTSTANTS.POST_LOGIN, function(req,res){
-    console.log(req.body);
-    res.send("Login");
-});
-
-
-
 app.listen(3000);
