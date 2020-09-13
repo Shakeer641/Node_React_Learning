@@ -1,4 +1,5 @@
 import React,{Component} from 'react';
+import axios from 'axios';
 
 export class RegisterComponent extends Component{
     constructor(){
@@ -10,9 +11,30 @@ export class RegisterComponent extends Component{
             lastname:"",
             email:"",
             age:"",
-            gender:""
+            gender:"",
+            countrylist:[]
         }
 }
+async componentDidMount(){
+   /* fetch('https://restcountries.eu/rest/v2/all').then(result => {
+        console.log(result);
+        return result.json();
+    }).catch(err => {
+        console.log(err);
+    }).then(finalresult => {
+        console.log(finalresult);
+    })*/
+        let countrylist = await axios('https://restcountries.eu/rest/v2/all');
+        console.log(countrylist);
+        this.setState({countrylist: countrylist.data});
+    };
+    
+    bindDataToDropdown = ()=>{
+        return this.state.countrylist.map((item,index) => {
+        return <option value={item.alpha2code}>{item.name}</option>
+        });
+    }
+
 //onchange handler event binding
 handleInputChange=(e)=>{
     console.log(e.target.value);
@@ -24,55 +46,72 @@ render(){
     return <div>
         <h1>Registration</h1>
         <form>
-            <div>
-                <label >User Name :  </label>
-                <input type="text" placeholder="username" name="username" onChange={this.handleInputChange}/>
+        <div className="form-group row">
+            <label for="colFormLabelSm" className="col-sm-2 col-form-label col-Form-label-Sm">UserName</label>
+            <div className="col-sm-10">
+                <input class="form-control form-control-sm" 
+                    type="text" placeholder="username" name="username" onChange={this.handleInputChange}/>
             </div>
-            <div>
-                <label >Password  :  </label>
-                <input type="password" placeholder="Password" name="password" onChange={this.handleInputChange}/>
-            </div>
-            <div>
-                <label >First Name:  </label>
-                <input type="text" placeholder="firstname" name="firstname" onChange={this.handleInputChange}/>
-            </div>
-            <div>
-            <   label >Last Name  :  </label>
-                <input type="text" placeholder="lastname" name="lastname" onChange={this.handleInputChange}/>
-            </div>
-            <div>
-                <label >Email     :  </label>
-                <input type="email" placeholder="Email" name="email" onChange={this.handleInputChange}/>
-            </div>
-            <div>
-                <label >Age       :  </label>
-                <input type="number" placeholder="Age" name="age" onChange={this.handleInputChange}/>
-            </div>
-            <div>
-                <input type="radio" id="male" name="gender" value="male" onChange={this.handleInputChange}/>
-                <label >Male</label>
-            </div>
-            <div>
-                <input type="radio" id="female" name="gender" value="female" onChange={this.handleInputChange}/>
-                <label for="female">Female</label>
-            </div>
-            <div>
-                <input type="checkbox" onChange={this.handleInputChange}/>
-                <label >I Agree the terms and conditions</label>
-            </div>
-            <div>
-                <button type="button" onClick={this.handleInputChange}>Register</button>
-            </div>
-        </form>
-        <h3>{this.state.username}</h3>
-        <h3>{this.state.password}</h3>
-        <h3>{this.state.firstname}</h3>
-        <h3>{this.state.lastname}</h3>
-        <h3>{this.state.email}</h3>
-        <h3>{this.state.age}</h3>
-        <h3>{this.state.gender}</h3>
-
-
         </div>
+        <div className="form-group row">
+            <label for="colFormLabelSm" className="col-sm-2 col-form-label col-Form-label-Sm">Password</label>
+            <div className="col-sm-10">
+                <input class="form-control form-control-sm" 
+                    type="password" placeholder="Password" name="password" onChange={this.handleInputChange}/>
+            </div>
+        </div>
+        <div className="form-group row">
+            <label for="colFormLabelSm" className="col-sm-2 col-form-label col-Form-label-Sm">First Name</label>
+            <div className="col-sm-10">
+                <input class="form-control form-control-sm" 
+                    type="text" placeholder="firstname" name="firstname" onChange={this.handleInputChange}/>
+            </div>
+        </div>
+        <div className="form-group row">
+            <label for="colFormLabelSm" className="col-sm-2 col-form-label col-Form-label-Sm">Last Name</label>
+            <div className="col-sm-10">
+                <input class="form-control form-control-sm" 
+                    type="text" placeholder="lastname" name="lastname" onChange={this.handleInputChange}/>
+            </div>
+        </div>
+        <div className="form-group row">
+            <label for="colFormLabelSm" className="col-sm-2 col-form-label col-Form-label-Sm">Email</label>
+            <div className="col-sm-10">
+                <input class="form-control form-control-sm" 
+                    type="email" placeholder="Email" name="email" onChange={this.handleInputChange}/>
+            </div>
+        </div>
+        <div className="form-group row">
+            <label for="colFormLabelSm" className="col-sm-2 col-form-label col-Form-label-Sm">Age</label>
+            <div className="col-sm-10">
+                <input class="form-control form-control-sm" 
+                    type="number" placeholder="Age" name="age" onChange={this.handleInputChange}/>
+            </div>
+        </div>
+        <div className="form-group row">
+            <label for="countrylist" className="col-sm-2 col-form-label">countrylist</label>
+            <div className="col-sm-10">
+            <select className="form-control" name="country" id="countrylist" onChange={this.handleChange}>
+                {this.bindDataToDropdown()}
+            </select>
+            </div>
+        </div>      
+        <div className="form-group row">
+            <label for="colFormLabelSm" className="col-sm-2 col-form-label">Gender</label>
+            <div className="col-sm-10">
+                <div className="custom-control custom-radio custom-control-inline">
+                    <input class="custom-control-input" 
+                    type="radio" id="gender1" name="gender" value="male" onChange={this.handleInputChange}/>
+                    <label for="gender1" class="custom-control-label">Male</label>
+                </div>
+                <div className="custom-control custom-radio custom-control-inline">
+                    <input class="custom-control-input" 
+                    type="radio" id="gender2" name="gender" value="female" onChange={this.handleInputChange}/>
+                    <label for="gender2" class="custom-control-label">Female</label>
+                </div>
+            </div>
+        </div>
+        </form>
+    </div>
 }
 }
